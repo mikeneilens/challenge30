@@ -15,3 +15,9 @@ class DeskBank(id:Int, name:String, val desks:List<Desk>):Space(id, name) {
     override fun capacity() = desks.size
 }
 
+typealias SlotTime=String
+
+data class Slot(val startDateTime:SlotTime, val endDateTime:SlotTime){
+
+}
+
