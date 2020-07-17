@@ -29,5 +29,7 @@ data class Booking(val space: Space, val slot: Slot, val customer: String) {
 interface BookingRepository{
     fun getFreeSpacesForSlot(spaceType:String,slot:Slot,location:Location):List<Space>
     fun getFreeSlotsForSpace(space:Space,startDateTime: SlotTime,endDateTime: SlotTime):List<Slot>
+    fun saveBooking(booking:Booking)
+    fun cancelBooking(booking:Booking)
 }
 
