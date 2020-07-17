@@ -31,14 +31,24 @@ data class Slot(val slotNumber: Int, val slotDescription: String) {
 val deskSlots: List<Slot> = listOf(Slot(1, "0900 to 1100"), Slot(2, "1100 to 1300"))
 val roomSlots: List<Slot> = listOf(Slot(1, "0900 to 1300"), Slot(2, "1300 to 1700"))
 
-data class Booking(val space: Space, val slot: Slot, val customer: String,val bookingDate:String) {
+data class Booking(val bookingStatus: BookingStatus, val space: Space, val slot: Slot, val customer: String, val bookingDate: String) {
 
+}
+
+sealed class BookingStatus{
+    class Confirmed(val id: Int):BookingStatus()
+    object Unconfirmed:BookingStatus()
+}
+
+fun createBooking(space: Space, slot: Slot, customer: String, bookingDate: String,repository: BookingRepository) {
+    val booking = Booking(BookingStatus.Unconfirmed,space, slot, customer, bookingDate)
+    val result = repository.saveBooking(booking)
 }
 
 interface BookingRepository {
     fun getFreeSpacesForSlot(spaceType: String, slot: Slot, location: Location): List<Space>
-    fun getFreeSlotsForSpace(space: Space, startDateTime: String, endDateTime: String): List<Slot>
-    fun saveBooking(booking: Booking)
+    fun getFreeSlotsForSpace(space: Space, bookingDate: String): List<Slot>
+    fun saveBooking(booking: Booking):Booking
     fun cancelBooking(booking: Booking)
 }
 
